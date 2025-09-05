@@ -3,3 +3,4 @@ schema
 package.json
 package-lock.json
 config.env
+config
