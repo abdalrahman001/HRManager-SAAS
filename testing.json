@@ -1,0 +1,406 @@
+### LOGIN (Admin user)
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "AdminPass123"
+}
+
+### LOGIN (Employee user by email)
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+  "email": "newhire@example.com",
+  "password": "HirePass789"
+}
+
+### LOGIN (Employee user by EmployeeId)
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "EmployeeId": 1002,
+  "password": "EmpSecret456"
+}
+
+---
+
+### CREATE USER (Admin creating another employee)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "employee_id": 2001,
+  "email": "newhire@example.com",
+  "password": "HirePass789",
+  "role": "employee"
+}
+
+### CREATE USER (Another test employee)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "employee_id": 2002,
+  "email": "worker2@example.com",
+  "password": "WorkerPass123",
+  "role": "employee"
+}
+
+### CREATE USER (Admin creating another admin)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "employee_id": 2003,
+  "email": "superadmin@example.com",
+  "password": "SuperSecret999",
+  "role": "admin"
+}
+
+---
+
+### GET ALL USERS (Requires token)
+GET http://localhost:3000/users
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+---
+
+### DELETE USER (Requires admin token)
+DELETE http://localhost:3000/users/5
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+---
+
+### CREATE DEPARTMENT (Admin only)
+POST http://localhost:3000/departments
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "Human Resources",
+  "description": "Handles employee relations, hiring, and compliance."
+}
+
+### CREATE DEPARTMENT (Second sample)
+POST http://localhost:3000/departments
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "IT",
+  "description": "Responsible for system infrastructure, networking, and security."
+}
+
+### CREATE DEPARTMENT (Third sample)
+POST http://localhost:3000/departments
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "Finance",
+  "description": "Oversees budgets, payroll, and financial planning."
+}
+
+### CREATE DEPARTMENT (Admin only)
+POST http://localhost:3000/api/departments
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "Engineering",
+  "description": "Handles product development and technical innovation"
+}
+
+### CREATE ANOTHER DEPARTMENT
+POST http://localhost:3000/api/departments
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "Human Resources",
+  "description": "Manages hiring, training, and employee relations"
+}
+
+### GET ALL DEPARTMENTS
+GET http://localhost:3000/api/departments
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### GET DEPARTMENT BY ID
+GET http://localhost:3000/api/departments/1
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### GET DEPARTMENT BY NAME
+GET http://localhost:3000/api/departments/name/Engineering
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### UPDATE DEPARTMENT
+PUT http://localhost:3000/api/departments/1
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "name": "R&D",
+  "description": "Research and Development department"
+}
+
+### DELETE DEPARTMENT
+DELETE http://localhost:3000/api/departments/2
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+---
+
+# ===========================================
+# EMPLOYEE ENDPOINTS
+# ===========================================
+
+### CREATE EMPLOYEE (Admin only)
+POST http://localhost:3000/employees
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "first_name": "John",
+  "last_name": "Smith",
+  "date_of_birth": "1990-01-01",
+  "department_id": 1,
+  "position_id": 101,
+  "salary": 60000
+}
+
+### GET ALL EMPLOYEES (Admin only)
+GET http://localhost:3000/employees
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### GET EMPLOYEE BY ID (Admin or self)
+GET http://localhost:3000/employees/1
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### UPDATE EMPLOYEE (Admin update)
+PUT http://localhost:3000/employees/admin/1
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "first_name": "John",
+  "last_name": "Smithers",
+  "date_of_birth": "1990-01-01",
+  "department_id": 2,
+  "position_id": 102,
+  "salary": 65000
+}
+
+### UPDATE EMPLOYEE (Self update)
+PUT http://localhost:3000/employees/self/1
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "first_name": "Johnny",
+  "last_name": "Smith",
+  "date_of_birth": "1990-01-01"
+}
+
+### DELETE EMPLOYEE (Admin only)
+DELETE http://localhost:3000/employees/1
+Authorization: Bearer {{ACCESS_TOKEN}}
+### =========================
+### POSITION TESTS
+### =========================
+
+### CREATE POSITION (Admin only)
+POST http://localhost:3000/positions
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "title": "Software Engineer",
+  "description": "Responsible for developing and maintaining applications."
+}
+
+### CREATE ANOTHER POSITION
+POST http://localhost:3000/positions
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "title": "HR Specialist",
+  "description": "Handles employee recruitment, onboarding, and relations."
+}
+
+### GET ALL POSITIONS
+GET http://localhost:3000/positions
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### GET POSITION BY ID
+GET http://localhost:3000/positions/1
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### UPDATE POSITION
+PUT http://localhost:3000/positions/1
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "title": "Senior Software Engineer",
+  "description": "Leads development teams and ensures code quality."
+}
+
+### DELETE POSITION
+DELETE http://localhost:3000/positions/2
+Authorization: Bearer {{ACCESS_TOKEN}}
+ATTENDANCE ENDPOINTS
+=========================
+RECORD ATTENDANCE EVENT (Clock In)
+
+POST http://localhost:3000/attendance
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+"employee_id": 1002,
+"event_type": "clock_in",
+"event_time": "2025-09-12T09:00:00"
+}
+
+RECORD ATTENDANCE EVENT (Clock Out)
+
+POST http://localhost:3000/attendance
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+"employee_id": 1002,
+"event_type": "clock_out",
+"event_time": "2025-09-12T17:00:00"
+}
+
+RECORD ATTENDANCE EVENT (Break Start)
+
+POST http://localhost:3000/attendance
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+"employee_id": 1002,
+"event_type": "break_start",
+"event_time": "2025-09-12T12:30:00"
+}
+
+RECORD ATTENDANCE EVENT (Break End)
+
+POST http://localhost:3000/attendance
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+"employee_id": 1002,
+"event_type": "break_end",
+"event_time": "2025-09-12T13:00:00"
+}
+
+GET ATTENDANCE BY EMPLOYEE ID
+
+GET http://localhost:5000/attendance/employee/7
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+GET ALL ATTENDANCE EVENTS (Admin)
+
+GET http://localhost:3000/attendance
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+GET ATTENDANCE EVENTS BY DATE RANGE
+
+GET http://localhost:3000/attendance/range?start=2025-09-01&end=2025-09-30
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+CREATE LEAVE REQUEST (Employee only)
+
+POST http://localhost:3000/leaves/self
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "start_date": "2025-09-20",
+  "end_date": "2025-09-25",
+  "reason": "Vacation trip with family"
+}
+
+GET OWN LEAVE REQUESTS (Employee only)
+
+GET http://localhost:3000/leaves/self
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+GET ALL LEAVE REQUESTS (Admin only)
+
+GET http://localhost:3000/leaves
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+UPDATE LEAVE REQUEST (Admin only)
+
+PUT http://localhost:3000/leaves/5
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "status": "approved"
+}
+
+DELETE LEAVE REQUEST (Admin only)
+
+DELETE http://localhost:3000/leaves/5
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+CREATE LEAVE REQUEST (Employee only)
+
+POST http://localhost:3000/leaves/self
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "start_date": "2025-09-20",
+  "end_date": "2025-09-25",
+  "reason": "Vacation trip with family"
+}
+
+GET OWN LEAVE REQUESTS (Employee only)
+
+GET http://localhost:3000/leaves/self
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+GET ALL LEAVE REQUESTS (Admin only)
+
+GET http://localhost:3000/leaves
+
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+UPDATE LEAVE REQUEST (Admin only)
+
+PUT http://localhost:3000/leaves/5
+
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+  "status": "approved"
+}
+
+DELETE LEAVE REQUEST (Admin only)
+
+DELETE http://localhost:3000/leaves/5
+
+Authorization: Bearer {{ACCESS_TOKEN}}

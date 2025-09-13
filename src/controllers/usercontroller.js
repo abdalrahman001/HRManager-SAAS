@@ -1,4 +1,6 @@
 const User = require("../Models/user.js");
+const bcrypt = require("bcrypt");
+
 class UserController {
     static async createUser(req,res){
         try{ const{ email, employee_id, password, role }=req.body;
@@ -8,11 +10,12 @@ class UserController {
           .status(400)
           .json({ success: false, message: "User already exists" });
       }
-            // TODO: hash password in production (bcrypt)
+          const saltRounds = 10;
+          const password_hash = await bcrypt.hash(password, saltRounds);
         
         const user=await User.createUser({
             email,
-            password_hash: password,
+            password_hash,
             role,
             employee_id})
             return res.status(201).json({success:true,data:user})
@@ -72,7 +75,39 @@ class UserController {
               return res.status(500).json({ success: false, message: "Server error" });
             }
           }
+          static async updateUser(req, res) {
+            try {
+              const { id } = req.params;
+              const { email, role, } = req.body;
+              const existingUser = await User.getUserById(id);
+              if (!existingUser) {
+              return res.status(404).json({ success: false, message: "User not found" });
+              }
+              if (!email) {
+                email=existingUser.email
+              }
+              if (!role) {
+                role=existingUser.role
+              }
+              const updatedUser = await User.updateUser(id, { email, role });
+              const newexistingUser = await User.getUserById(id);
+              if(newexistingUseremail!==email||newexistingUser.role!==role){
+                return res.status(401).json({
+                  success: false,
+                  message: "failed to update user",
+              });}else{
+                return res.status(200).json({
+                  success: true,
+                  message: "User updated",
+                    data: updatedUser,
+                });
+              }
+              }catch (error) {
+              return res.status(500).json({ success: false, message: "Server error" });
+            }
+            }
         }
+
         
 
 module.exports = UserController;

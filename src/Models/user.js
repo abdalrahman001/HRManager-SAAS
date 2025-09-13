@@ -34,7 +34,7 @@ class User{
     if (rows.length > 0) {
       return rows; 
     } else {
-      return []; 
+      return 0; 
     }
   }
    static async deleteUser({ user_id }) {
@@ -52,6 +52,14 @@ class User{
     );
     return rows[0] || null;
   }
-  
+  static async updateUser(user_id, { email, role }) {
+    await pool.query(
+      "UPDATE users SET email = ?, employee_id = ?, role = ? WHERE user_id = ?",
+      [email, employee_id, role, user_id]
+    );
+    return this.getUserById(user_id);
+  }
+
+    
 }
 module.exports = User;
